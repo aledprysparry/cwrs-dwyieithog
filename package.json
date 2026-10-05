@@ -1,0 +1,12 @@
+{
+  "name": "cwrs-dwyieithog",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Bilingual (Welsh/English) course player that builds one SCORM 1.2 package with an in-place language toggle",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "serve": "node scripts/serve.mjs"
+  }
+}

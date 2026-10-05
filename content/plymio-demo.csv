@@ -1,0 +1,15 @@
+type,cy,en,options_cy,options_en,answer
+course,DEMO · Cyflwyniad i blymio,DEMO · Introduction to plumbing,,,100
+page,Croeso,Welcome,,,
+text,"Cwrs enghreifftiol yw hwn i ddangos sut mae botwm iaith yn gweithio o fewn un pecyn SCORM. Testun demo yw'r cynnwys, nid deunydd dysgu go iawn.","This is a sample course to show how a language toggle works inside one SCORM package. The content is demo text, not real learning material.",,,
+text,"Defnyddiwch y botwm English ar y dde uchaf unrhyw bryd. Byddwch chi'n aros ar yr un dudalen, a bydd y cwrs yn cofio'ch atebion.","Use the Cymraeg button at the top right at any time. You stay on the same page, and the course remembers your answers.",,,
+page,Diogelwch cyn dechrau,Safety before you start,,,
+text,"Cyn dechrau unrhyw waith ar bibellau, mae angen gwybod ble i ddiffodd y cyflenwad dŵr.","Before any work on pipes, you need to know where to turn off the water supply.",,,
+list,Diffoddwch y prif gyflenwad dŵr|Agorwch dap i ddraenio'r dŵr o'r pibellau|Gwisgwch fenig a sbectol diogelwch,Turn off the main water supply|Open a tap to drain the water from the pipes|Wear gloves and safety glasses,,,
+callout,"Os nad ydych chi'n siŵr, gofynnwch i'ch tiwtor cyn dechrau.","If you are not sure, ask your tutor before you start.",,,
+page,Offer sylfaenol,Basic tools,,,
+text,Dyma rai o'r offer y byddwch chi'n eu defnyddio amlaf.,Here are some of the tools you will use most often.,,,
+list,Sbaner addasadwy|Torrwr pibellau|Tâp PTFE|Lefel wirod,Adjustable spanner|Pipe cutter|PTFE tape|Spirit level,,,
+page,Profwch eich hun,Test yourself,,,
+question,Beth ddylech chi ei wneud gyntaf cyn gweithio ar bibellau?,What should you do first before working on pipes?,Diffodd y prif gyflenwad dŵr|Torri'r bibell|Agor pob ffenest,Turn off the main water supply|Cut the pipe|Open every window,0
+question,Pa offeryn sy'n torri pibellau'n lân?,Which tool cuts pipes cleanly?,Lefel wirod|Torrwr pibellau|Tâp PTFE,Spirit level|Pipe cutter|PTFE tape,1

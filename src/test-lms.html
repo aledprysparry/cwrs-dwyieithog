@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mock LMS</title>
+  <style>
+    body { margin: 0; font: 14px/1.4 system-ui, sans-serif; display: grid; grid-template-rows: 1fr 14rem; height: 100vh; background: #fff; color: #111; }
+    iframe { width: 100%; height: 100%; border: 0; border-bottom: 2px solid #333; }
+    .panel { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+    pre { margin: 0; padding: .5rem .75rem; overflow: auto; font-size: 12px; }
+    #state { background: #f4f4f4; }
+    .bar { display: flex; gap: .5rem; padding: .25rem .75rem; background: #333; color: #fff; align-items: center; }
+    button { font: inherit; }
+  </style>
+</head>
+<body>
+  <iframe id="course" title="Course"></iframe>
+  <div>
+    <div class="bar">Mock SCORM 1.2 LMS · data survives reloads (localStorage) <button id="reset" type="button">Reset learner</button> <button id="relaunch" type="button">Relaunch</button></div>
+    <div class="panel"><pre id="log"></pre><pre id="state"></pre></div>
+  </div>
+  <script>
+    // Stands in for Moodle: same SCORM 1.2 API, logs every call, keeps the cmi
+    // data between launches so resume can be tested.
+    const KEY = 'mock-lms-cmi';
+    let cmi = JSON.parse(localStorage.getItem(KEY) || 'null') || {
+      'cmi.core.lesson_status': 'not attempted', 'cmi.suspend_data': '', 'cmi.core.lesson_location': '',
+    };
+    const log = document.getElementById('log');
+    const write = (line) => { log.textContent = line + '\n' + log.textContent; };
+    const show = () => {
+      localStorage.setItem(KEY, JSON.stringify(cmi));
+      let pretty = { ...cmi };
+      try { pretty['cmi.suspend_data'] = JSON.parse(cmi['cmi.suspend_data']); } catch (e) {}
+      document.getElementById('state').textContent = JSON.stringify(pretty, null, 2);
+    };
+    window.API = {
+      LMSInitialize: () => { write('LMSInitialize'); return 'true'; },
+      LMSFinish: () => { write('LMSFinish'); show(); return 'true'; },
+      LMSGetValue: (k) => { write(`Get ${k} → ${cmi[k] ?? ''}`); return cmi[k] ?? ''; },
+      LMSSetValue: (k, v) => { if (cmi[k] !== v) write(`Set ${k} = ${v}`); cmi[k] = v; return 'true'; },
+      LMSCommit: () => { show(); return 'true'; },
+      LMSGetLastError: () => '0', LMSGetErrorString: () => '', LMSGetDiagnostic: () => '',
+    };
+    window.mockLms = { get cmi() { return cmi; } };
+    const launch = () => { document.getElementById('course').src = 'scorm/index.html?t=' + Date.now(); };
+    document.getElementById('reset').onclick = () => {
+      cmi = { 'cmi.core.lesson_status': 'not attempted', 'cmi.suspend_data': '', 'cmi.core.lesson_location': '' };
+      log.textContent = ''; show(); launch();
+    };
+    document.getElementById('relaunch').onclick = () => { write('--- relaunch ---'); launch(); };
+    show(); launch();
+  </script>
+</body>
+</html>
