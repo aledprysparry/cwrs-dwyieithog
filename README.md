@@ -22,6 +22,13 @@ npm run serve     # http://localhost:4610/plymio-demo/test-lms.html
 `test-lms.html` is a mock LMS that logs every SCORM call and keeps the learner's data
 between launches, for testing resume without Moodle.
 
+## Publishing the demo
+
+`npm run site` rebuilds and copies the web version and the SCORM zip into `docs/`.
+GitHub Pages serves `docs/` on `main` at https://aledprysparry.github.io/cwrs-dwyieithog/
+(the zip is at `plymio-demo-scorm12.zip` under the same address). Commit and push
+`docs/` to update it.
+
 ## Writing a course
 
 One CSV per course in `content/`, editable in Excel or Google Sheets. One row per block:
