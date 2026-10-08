@@ -44,6 +44,39 @@ window.COURSE = {
     },
     {
       "title": {
+        "cy": "Enghraifft o fideo",
+        "en": "Example video"
+      },
+      "unit": null,
+      "blocks": [
+        {
+          "type": "text",
+          "text": {
+            "cy": "Mae'r cwrs yn gallu dangos fideos o YouTube neu Vimeo. Dyma fideo gan y Coleg Cymraeg o'r adnodd Cynhyrchu Cig, i ddangos sut mae'n edrych.",
+            "en": "The course can show videos from YouTube or Vimeo. This is a Coleg Cymraeg video from the Cynhyrchu Cig resource, to show how it looks."
+          }
+        },
+        {
+          "type": "video",
+          "title": {
+            "cy": "Cynhyrchu Cig Eidion: Canllaw'r Cigydd (Coleg Cymraeg, yn Gymraeg)",
+            "en": "Beef production: the butcher's guide (Coleg Cymraeg, in Welsh)"
+          },
+          "src": {
+            "cy": {
+              "kind": "iframe",
+              "url": "https://www.youtube-nocookie.com/embed/lcwWrLVu4yw?rel=0"
+            },
+            "en": {
+              "kind": "iframe",
+              "url": "https://www.youtube-nocookie.com/embed/lcwWrLVu4yw?rel=0"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": {
         "cy": "Diogelwch cyn dechrau",
         "en": "Safety before you start"
       },

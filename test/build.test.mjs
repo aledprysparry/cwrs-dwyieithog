@@ -15,7 +15,7 @@ test('parses quoted fields with commas, quotes and newlines', () => {
 test('the demo course builds with both languages aligned', () => {
   const { course, errors } = buildCourse(parseCsv(readFileSync(new URL('../content/plymio-demo.csv', import.meta.url), 'utf8')));
   assert.deepEqual(errors, []);
-  assert.equal(course.pages.length, 4);
+  assert.equal(course.pages.length, 5);
   for (const block of course.pages.flatMap((page) => page.blocks)) {
     if (block.type === 'list') assert.equal(block.items.cy.length, block.items.en.length);
     if (block.type === 'question') assert.equal(block.options.cy.length, block.options.en.length);
