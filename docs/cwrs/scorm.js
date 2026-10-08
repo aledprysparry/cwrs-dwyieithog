@@ -11,7 +11,7 @@
   }
 
   const api = findApi(window) || (window.opener && findApi(window.opener));
-  const storeKey = 'cwrs:' + location.pathname;
+  const storeKey = 'cwrs:' + location.pathname + location.search;
   let local = {};
   let finished = false;
 

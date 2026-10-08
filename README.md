@@ -22,12 +22,20 @@ npm run serve     # http://localhost:4610/plymio-demo/test-lms.html
 `test-lms.html` is a mock LMS that logs every SCORM call and keeps the learner's data
 between launches, for testing resume without Moodle.
 
-## Publishing the demo
+## The demonstration site
 
-`npm run site` rebuilds and copies the web version and the SCORM zip into `docs/`.
-GitHub Pages serves `docs/` on `main` at https://aledprysparry.github.io/cwrs-dwyieithog/
-(the zip is at `plymio-demo-scorm12.zip` under the same address). Commit and push
-`docs/` to update it.
+`npm run site` rebuilds and assembles `docs/`, which GitHub Pages serves on `main`
+at https://aledprysparry.github.io/cwrs-dwyieithog/. Commit and push `docs/` to update it.
+
+- `index.html`: landing page, bilingual, linking the three parts
+- `cwrs/`: the course as a website
+- `moodle.html`: the course beside a mock Moodle that shows, in plain words, what
+  is recorded (status, score, language, page) and resumes after "close and reopen"
+- `golygydd.html`: the editor. The spreadsheet as a form, Welsh and English side by
+  side, live preview, errors per row, and a SCORM download built in the browser.
+  It uses the same `lib.mjs` as the command-line build, so both refuse the same mistakes.
+
+`npm run serve` serves `docs/` at http://localhost:4610/.
 
 ## Writing a course
 
@@ -41,6 +49,14 @@ One CSV per course in `content/`, editable in Excel or Google Sheets. One row pe
 | callout | Highlighted note | Highlighted note | | | |
 | list | item one\|item two | item one\|item two | | | |
 | question | Question | Question | a\|b\|c | a\|b\|c | correct option, 0 = first |
+| unit | Unit title | Unit title | | | |
+| heading | Subheading | Subheading | | | |
+| video | Caption | Caption | | | |
+
+A `unit` row groups the pages after it in the contents list. A `video` row takes its
+links from the `media_cy` and `media_en` columns: YouTube (played from the no-cookie
+domain), Vimeo, or an `.mp4`. The same link can serve both languages. A video in a
+SCORM package plays only when the learner is online.
 
 The build refuses a course with a missing translation, a list or question whose two
 languages have a different number of items, or an answer that is not an option. Each
@@ -53,5 +69,5 @@ Prototype, 05.10.2026.
 - The content is **demo text**. The Welsh is drafted and has not been reviewed by a
   Welsh editor. Register is `chi`, to be confirmed with the Coleg.
 - Tested against the mock LMS only. **Not yet tested on SCORM Cloud or a real Moodle.**
-- Not built yet: images, video, other question types, SCORM interactions
-  (per-question reporting), an editor in the browser.
+- Not built yet: images, other question types, SCORM interactions (per-question
+  reporting). The demo course has no video row because no video has been supplied.

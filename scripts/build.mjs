@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync, existsSyn
 import { basename, join, dirname } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { parseCsv, buildCourse, scormManifest } from './lib.mjs';
+import { parseCsv, buildCourse, scormManifest, formatError } from './lib.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const input = process.argv[2] ?? join(root, 'content/plymio-demo.csv');
@@ -13,7 +13,7 @@ const slug = basename(input, '.csv');
 
 const { course, errors } = buildCourse(parseCsv(readFileSync(input, 'utf8')));
 if (errors.length) {
-  console.error(`${input} has ${errors.length} problem(s):\n  ${errors.join('\n  ')}`);
+  console.error(`${input} has ${errors.length} problem(s):\n  ${errors.map((e) => formatError(e)).join('\n  ')}`);
   process.exit(1);
 }
 

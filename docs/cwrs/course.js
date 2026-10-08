@@ -4,12 +4,27 @@ window.COURSE = {
     "en": "DEMO · Introduction to plumbing"
   },
   "mastery": 100,
+  "units": [
+    {
+      "title": {
+        "cy": "Uned 1: Diogelwch ac offer",
+        "en": "Unit 1: Safety and tools"
+      }
+    },
+    {
+      "title": {
+        "cy": "Uned 2: Asesu",
+        "en": "Unit 2: Assessment"
+      }
+    }
+  ],
   "pages": [
     {
       "title": {
         "cy": "Croeso",
         "en": "Welcome"
       },
+      "unit": null,
       "blocks": [
         {
           "type": "text",
@@ -32,12 +47,20 @@ window.COURSE = {
         "cy": "Diogelwch cyn dechrau",
         "en": "Safety before you start"
       },
+      "unit": 0,
       "blocks": [
         {
           "type": "text",
           "text": {
             "cy": "Cyn dechrau unrhyw waith ar bibellau, mae angen gwybod ble i ddiffodd y cyflenwad dŵr.",
             "en": "Before any work on pipes, you need to know where to turn off the water supply."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "cy": "Tri cham cyntaf",
+            "en": "Three first steps"
           }
         },
         {
@@ -69,6 +92,7 @@ window.COURSE = {
         "cy": "Offer sylfaenol",
         "en": "Basic tools"
       },
+      "unit": 0,
       "blocks": [
         {
           "type": "text",
@@ -93,6 +117,13 @@ window.COURSE = {
               "Spirit level"
             ]
           }
+        },
+        {
+          "type": "callout",
+          "text": {
+            "cy": "Cofiwch wneud nodiadau wrth fynd drwy'r uned.",
+            "en": "Remember to make notes as you go through the unit."
+          }
         }
       ]
     },
@@ -101,6 +132,7 @@ window.COURSE = {
         "cy": "Profwch eich hun",
         "en": "Test yourself"
       },
+      "unit": 1,
       "blocks": [
         {
           "type": "question",

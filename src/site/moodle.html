@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="cy">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Golwg Moodle</title>
+  <link rel="stylesheet" href="site.css">
+  <style>
+    body { height: 100vh; display: grid; grid-template-rows: auto 1fr; }
+    .split { display: grid; grid-template-columns: minmax(0, 1fr) 22rem; min-height: 0; }
+    .course { width: 100%; height: 100%; border: 0; border-right: 1px solid var(--line); background: var(--paper); }
+    .panel { overflow: auto; padding: 1.5rem; background: var(--white); }
+    .panel h1 { font: 400 1.5rem/1.2 var(--serif); margin: 0 0 .25rem; }
+    .panel .note { margin: 0 0 1.25rem; }
+    dl { margin: 0 0 1.5rem; display: grid; grid-template-columns: auto 1fr; gap: 0; }
+    dt, dd { margin: 0; padding: .6rem 0; border-top: 1px solid var(--line); }
+    dt { color: var(--muted); font-size: .9375rem; padding-right: 1rem; }
+    dd { font-weight: 600; text-align: right; }
+    dd.passed { color: var(--good); }
+    dd.failed { color: var(--bad); }
+    .actions { display: grid; gap: .5rem; margin-bottom: 1.5rem; }
+    details summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; color: var(--muted); }
+    pre { font: .75rem/1.5 var(--mono); background: var(--paper); padding: .75rem; margin: 0; max-height: 18rem; overflow: auto; white-space: pre-wrap; word-break: break-all; }
+    @media (max-width: 859px) {
+      body { height: auto; display: block; }
+      .split { grid-template-columns: 1fr; }
+      .course { height: 75vh; border-right: 0; border-bottom: 1px solid var(--line); }
+      .panel { padding: 1.25rem 1rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <a class="home" href="./" data-cy="← Yn ôl i'r arddangosiad" data-en="← Back to the demonstration"></a>
+  </header>
+  <span hidden data-cy-title="Golwg Moodle · Cwrs dwyieithog" data-en-title="Moodle view · Bilingual course"></span>
+  <div class="split">
+    <iframe class="course" id="course" data-cy-label="Y cwrs" data-en-label="The course"></iframe>
+    <aside class="panel" aria-live="polite">
+      <h1 data-cy="Beth mae Moodle yn ei weld" data-en="What Moodle sees"></h1>
+      <p class="note" data-cy="Yr un data ag y byddai Moodle yn ei gadw yn ei lyfr graddau, yn diweddaru wrth i chi fynd drwy'r cwrs." data-en="The same data Moodle would keep in its gradebook, updating as you go through the course."></p>
+      <dl>
+        <dt data-cy="Statws" data-en="Status"></dt><dd id="v-status"></dd>
+        <dt data-cy="Sgôr" data-en="Score"></dt><dd id="v-score"></dd>
+        <dt data-cy="Iaith" data-en="Language"></dt><dd id="v-lang"></dd>
+        <dt data-cy="Tudalen" data-en="Page"></dt><dd id="v-page"></dd>
+        <dt data-cy="Tudalennau a welwyd" data-en="Pages seen"></dt><dd id="v-seen"></dd>
+        <dt data-cy="Cwestiynau a atebwyd" data-en="Questions answered"></dt><dd id="v-answered"></dd>
+      </dl>
+      <div class="actions">
+        <button type="button" class="button quiet" id="relaunch" data-cy="Cau'r cwrs a'i ailagor" data-en="Close the course and reopen it"></button>
+        <button type="button" class="button quiet" id="reset" data-cy="Dechrau fel dysgwr newydd" data-en="Start as a new learner"></button>
+      </div>
+      <details>
+        <summary data-cy="Galwadau SCORM (technegol)" data-en="SCORM calls (technical)"></summary>
+        <pre id="log"></pre>
+      </details>
+    </aside>
+  </div>
+  <script type="module" src="moodle.js"></script>
+</body>
+</html>

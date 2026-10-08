@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="cy">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Golygydd</title>
+  <link rel="stylesheet" href="site.css">
+  <style>
+    body { height: 100vh; display: grid; grid-template-rows: auto 1fr; }
+    .split { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); min-height: 0; }
+    .editor { overflow: auto; padding: 1.5rem 1.5rem 4rem; border-right: 1px solid var(--line); }
+    .preview { display: grid; grid-template-rows: auto 1fr; min-height: 0; background: var(--white); }
+    .preview-head { padding: .6rem 1rem; color: var(--muted); font-size: .875rem; border-bottom: 1px solid var(--line); }
+    .preview iframe { width: 100%; height: 100%; border: 0; }
+
+    h1 { font: 400 1.75rem/1.2 var(--serif); margin: 0 0 .25rem; }
+    .intro { margin: 0 0 1.25rem; color: var(--muted); }
+    .toolbar { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.25rem; }
+    .toolbar input[type=file] { display: none; }
+
+    .status { border-left: 3px solid var(--good); background: var(--tint); padding: .75rem 1rem; margin-bottom: 1.5rem; }
+    .status.has-errors { border-color: var(--bad); background: var(--bad-tint); }
+    .status p { margin: 0; font-weight: 600; }
+    .status ul { margin: .5rem 0 0; padding-left: 1.1rem; }
+    .status li button { background: none; border: 0; padding: 0; min-height: 0; color: var(--bad); text-decoration: underline; text-align: left; font: inherit; }
+
+    .cols { display: grid; grid-template-columns: 2.5rem 1fr 1fr; gap: .75rem; padding: 0 0 .4rem; font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); position: sticky; top: -1.5rem; background: var(--paper); z-index: 1; padding-top: .5rem; }
+    .rows { list-style: none; margin: 0; padding: 0; }
+    .row { border-top: 1px solid var(--line); padding: .75rem 0 1rem; }
+    .row.kind-unit, .row.kind-page { border-top: 2px solid var(--ink); margin-top: 1rem; }
+    .row.kind-course { border-top: 0; }
+    .row-head { display: flex; align-items: center; gap: .5rem; margin-bottom: .5rem; }
+    .num { width: 2.5rem; color: var(--muted); font-size: .8125rem; font-variant-numeric: tabular-nums; }
+    .row-head select { min-height: 40px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); padding: 0 .4rem; font-weight: 600; }
+    .row-head .spacer { flex: 1; }
+    .icon { width: 40px; min-height: 40px; border: 1px solid transparent; background: none; color: var(--muted); border-radius: 4px; }
+    .icon:hover { border-color: var(--line); color: var(--ink); }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-left: 3rem; }
+    .pair + .pair, .extra { margin-top: .5rem; }
+    .extra { margin-left: 3rem; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .field { display: grid; gap: .2rem; }
+    .field > span { font-size: .75rem; color: var(--muted); }
+    input[type=text], input[type=url], input[type=number], textarea, .extra select {
+      width: 100%; border: 1px solid #8a877d; border-radius: 4px; background: var(--white); padding: .45rem .6rem; min-height: 40px;
+    }
+    .extra select, .extra input { width: auto; }
+    textarea { resize: vertical; min-height: 4.5rem; line-height: 1.45; }
+    .row.kind-page input, .row.kind-unit input, .row.kind-course input[type=text] { font-weight: 600; }
+    .row.invalid .pair input:placeholder-shown, .row.invalid .pair textarea:placeholder-shown { border-color: var(--bad); background: var(--bad-tint); }
+    .row-error { margin: .5rem 0 0 3rem; color: var(--bad); font-size: .875rem; font-weight: 600; }
+    .row-error:empty { display: none; }
+    .hint { font-size: .75rem; color: var(--muted); margin: .25rem 0 0 3rem; }
+    .add { display: flex; gap: .5rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); }
+    .add select { min-height: 44px; border: 1px solid #8a877d; border-radius: 4px; background: var(--white); padding: 0 .5rem; }
+
+    @media (max-width: 959px) {
+      body { height: auto; display: block; }
+      .split { grid-template-columns: 1fr; }
+      .editor { border-right: 0; padding: 1.25rem 1rem 2rem; }
+      .preview { height: 80vh; border-top: 1px solid var(--line); }
+      .cols { display: none; }
+      .pair { grid-template-columns: 1fr; margin-left: 0; }
+      .extra, .hint, .row-error { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <a class="home" href="./" data-cy="← Yn ôl i'r arddangosiad" data-en="← Back to the demonstration"></a>
+    <button type="button" class="lang" id="ui-lang"></button>
+  </header>
+  <span hidden data-cy-title="Golygydd · Cwrs dwyieithog" data-en-title="Editor · Bilingual course"></span>
+  <div class="split">
+    <section class="editor" aria-labelledby="editor-title">
+      <h1 id="editor-title" data-cy="Golygydd y cwrs" data-en="Course editor"></h1>
+      <p class="intro" data-cy="Pob rhes yw un darn o'r cwrs, gyda'r Gymraeg a'r Saesneg ochr yn ochr. Mae'r rhagolwg yn diweddaru wrth i chi deipio." data-en="Each row is one piece of the course, with the Welsh and English side by side. The preview updates as you type."></p>
+      <div class="toolbar">
+        <button type="button" class="button" id="download-scorm" data-cy="Lawrlwytho pecyn SCORM" data-en="Download SCORM package"></button>
+        <button type="button" class="button quiet" id="download-csv" data-cy="Lawrlwytho'r daenlen" data-en="Download spreadsheet"></button>
+        <button type="button" class="button quiet" id="load-csv" data-cy="Llwytho taenlen" data-en="Load a spreadsheet"></button>
+        <input type="file" id="csv-file" accept=".csv,text/csv">
+        <button type="button" class="button quiet" id="reset" data-cy="Ailosod y demo" data-en="Reset the demo"></button>
+      </div>
+      <div class="status" id="status" role="status"></div>
+      <div class="cols" aria-hidden="true"><span></span><span>Cymraeg</span><span>English</span></div>
+      <ol class="rows" id="rows"></ol>
+      <div class="add">
+        <select id="add-type" data-cy-label="Math o res" data-en-label="Row type"></select>
+        <button type="button" class="button quiet" id="add-row" data-cy="Ychwanegu rhes" data-en="Add a row"></button>
+      </div>
+    </section>
+    <section class="preview" aria-labelledby="preview-title">
+      <p class="preview-head" id="preview-title" data-cy="Rhagolwg: fel y bydd y dysgwr yn ei weld" data-en="Preview: as the learner will see it"></p>
+      <iframe id="preview" data-cy-label="Rhagolwg o'r cwrs" data-en-label="Course preview"></iframe>
+    </section>
+  </div>
+  <script type="module" src="golygydd.js"></script>
+</body>
+</html>

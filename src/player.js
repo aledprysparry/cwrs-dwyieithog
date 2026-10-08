@@ -1,7 +1,9 @@
 // Course player. Reads window.COURSE (built from the spreadsheet), renders one
 // page at a time, and swaps language in place without losing the learner's place.
 (function () {
-  const course = window.COURSE;
+  // ?preview=1 inside the editor: read the course the editor has just built.
+  const preview = new URLSearchParams(location.search).has('preview') && window.parent !== window;
+  const course = (preview && window.parent.previewCourse) || window.COURSE;
   const Scorm = window.Scorm;
 
   const UI = {
@@ -82,10 +84,22 @@
   // ---- rendering ------------------------------------------------------------
   function renderBlock(block, t, lang) {
     if (block.type === 'text') return el('p', { textContent: block.text[lang] });
+    if (block.type === 'heading') return el('h2', { textContent: block.text[lang] });
+    if (block.type === 'video') return renderVideo(block, lang);
     if (block.type === 'callout') return el('p', { className: 'callout', textContent: block.text[lang] });
     if (block.type === 'list') return el('ul', {}, ...block.items[lang].map((item) => el('li', { textContent: item })));
     if (block.type === 'question') return renderQuestion(block, t, lang);
     return null;
+  }
+
+  function renderVideo(block, lang) {
+    const src = block.src[lang];
+    const frame = src.kind === 'file'
+      ? el('video', { src: src.url, controls: true, preload: 'metadata' })
+      : el('iframe', { src: src.url, title: block.title[lang], loading: 'lazy', allowFullscreen: true });
+    if (src.kind !== 'file') frame.allow = 'encrypted-media; picture-in-picture; fullscreen';
+    if (src.kind === 'file') frame.setAttribute('aria-label', block.title[lang]);
+    return el('figure', { className: 'video' }, el('div', { className: 'frame' }, frame), el('figcaption', { textContent: block.title[lang] }));
   }
 
   function renderQuestion(q, t, lang) {
@@ -154,13 +168,27 @@
     // Contents list
     $('toc-summary').textContent = `${t.contents} · ${fill(t.pageOf, { n: Math.min(state.page + 1, finishIndex), t: finishIndex })}`;
     const list = $('toc-list');
-    list.replaceChildren(...course.pages.map((page, index) => {
+    const pageItem = (page, index) => {
       const button = el('button', { type: 'button', textContent: page.title[lang] });
       if (index === state.page) button.setAttribute('aria-current', 'page');
       if (state.visited.includes(index)) button.classList.add('visited');
       button.addEventListener('click', () => go(index));
       return el('li', {}, button);
-    }));
+    };
+    const units = course.units || [];
+    if (!units.length) list.replaceChildren(...course.pages.map(pageItem));
+    else {
+      const groups = [];
+      course.pages.forEach((page, index) => {
+        const key = page.unit == null ? -1 : page.unit;
+        let group = groups.find((g) => g.key === key);
+        if (!group) groups.push(group = { key, items: [] });
+        group.items.push(pageItem(page, index));
+      });
+      list.replaceChildren(...groups.map((g) => el('li', { className: 'unit' },
+        g.key >= 0 ? el('p', { className: 'unit-title', textContent: units[g.key].title[lang] }) : null,
+        el('ol', {}, ...g.items))));
+    }
 
     // Page body
     const article = $('page');

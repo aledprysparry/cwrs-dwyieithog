@@ -1,0 +1,51 @@
+/* Shared by the demo's own pages. Same tokens as the course player. */
+:root {
+  --paper: #faf8f4;
+  --ink: #1d1d1b;
+  --muted: #55554f;
+  --accent: #1f5a4a;
+  --line: #d9d4c8;
+  --tint: #eef3ef;
+  --white: #ffffff;
+  --good: #1d6b3a;
+  --bad: #a23a1f;
+  --bad-tint: #fbeee9;
+  --serif: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.6 var(--sans); }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; min-height: 44px; border-radius: 4px; }
+
+.bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .75rem 1.5rem; border-bottom: 1px solid var(--line); background: var(--paper);
+}
+.bar .home { color: var(--muted); text-decoration: none; font-size: .9375rem; }
+.bar .home:hover { color: var(--ink); }
+.lang {
+  background: transparent; color: var(--accent); border: 1.5px solid var(--accent);
+  padding: .35rem 1rem; font-weight: 600;
+}
+.lang:hover { background: var(--tint); }
+
+.button {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+  padding: .55rem 1.25rem; border-radius: 4px; font-weight: 600; text-decoration: none;
+  border: 1.5px solid var(--accent); background: var(--accent); color: var(--white);
+}
+.button:hover { background: #17463a; }
+.button.quiet { background: transparent; color: var(--accent); }
+.button.quiet:hover { background: var(--tint); }
+.button:disabled { opacity: .45; cursor: not-allowed; }
+
+.note { color: var(--muted); font-size: .9375rem; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .flash { animation: flash 1.2s ease-out; }
+  @keyframes flash { from { background: #fff3c4; } to { background: transparent; } }
+}

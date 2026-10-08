@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="cy">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cwrs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#main" data-ui="skip"></a>
+  <header class="bar">
+    <p class="course-title" id="course-title"></p>
+    <button type="button" class="lang" id="lang-toggle"></button>
+  </header>
+  <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="progress"><span></span></div>
+  <div class="layout">
+    <nav class="toc" id="toc">
+      <details id="toc-details">
+        <summary id="toc-summary"></summary>
+        <ol id="toc-list"></ol>
+      </details>
+    </nav>
+    <main id="main" tabindex="-1">
+      <article id="page"></article>
+      <div class="pager">
+        <button type="button" class="ghost" id="prev"></button>
+        <span class="count" id="count"></span>
+        <button type="button" class="primary" id="next"></button>
+      </div>
+    </main>
+  </div>
+  <script src="course.js"></script>
+  <script src="scorm.js"></script>
+  <script src="player.js"></script>
+</body>
+</html>
